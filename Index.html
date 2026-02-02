@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pour Seynabou Bâ ❤️</title>
+    <style>
+        :root {
+            --primary-color: #d63384;
+            --bg-color: #fff0f3;
+            --text-color: #4a4a4a;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: var(--bg-color);
+            font-family: 'Georgia', serif;
+            overflow: hidden;
+        }
+
+        .card {
+            background: white;
+            padding: 40px;
+            border-radius: 30px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 450px;
+            width: 85%;
+            z-index: 10;
+            border: 2px solid #ffe3e8;
+            position: relative;
+        }
+
+        h1 { 
+            color: var(--primary-color); 
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+        }
+        
+        #poem {
+            display: none;
+            line-height: 1.8;
+            color: var(--text-color);
+            font-size: 1.1rem;
+            animation: fadeIn 2.5s ease;
+        }
+
+        .highlight {
+            color: var(--primary-color);
+            font-weight: bold;
+            font-size: 1.4rem;
+            display: block;
+            margin-bottom: 15px;
+        }
+
+        button {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 15px 35px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(214, 51, 132, 0.3);
+            outline: none;
+        }
+
+        button:hover { 
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 6px 20px rgba(214, 51, 132, 0.4);
+        }
+
+        .heart {
+            position: absolute;
+            color: var(--primary-color);
+            user-select: none;
+            pointer-events: none;
+            animation: float 4s linear forwards;
+            z-index: 1;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg) scale(0.5); opacity: 1; }
+            100% { transform: translateY(-10vh) rotate(360deg) scale(1.5); opacity: 0; }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; filter: blur(8px); transform: translateY(20px); }
+            to { opacity: 1; filter: blur(0); transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="bgMusic" loop>
+        <source src="https://www.chosic.com/wp-content/uploads/2021/04/My-Love-Piano-Melody.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="card">
+        <h1 id="title">Une surprise pour toi...</h1>
+        <p id="instruction">Seynabou, clique sur le bouton pour l'ouvrir.</p>
+        
+        <div id="poem">
+            <span class="highlight">Chère Seynabou Bâ,</span>
+            En ce jour qui célèbre ta naissance,<br>
+            Je voulais te dire toute ton importance.<br>
+            Ton sourire est ma plus belle clarté,<br>
+            Et ton nom rime avec pureté et beauté.<br><br>
+            Que cette nouvelle année t'apporte la joie,<br>
+            Celle que tu mérites, celle qui brille en toi.<br><br>
+            <strong style="color: var(--primary-color);">Joyeux Anniversaire mon amour !</strong>
+        </div>
+
+        <br>
+        <button id="btn">Ouvrir mon cœur</button>
+    </div>
+
+    <script>
+        const btn = document.getElementById('btn');
+        const poem = document.getElementById('poem');
+        const instruction = document.getElementById('instruction');
+        const title = document.getElementById('title');
+        const music = document.getElementById('bgMusic');
+
+        btn.addEventListener('click', () => {
+            // Lancer la musique
+            music.play().catch(e => console.log("L'audio a besoin d'une interaction."));
+            
+            // Modifier l'affichage
+            poem.style.display = 'block';
+            btn.style.display = 'none';
+            instruction.style.display = 'none';
+            title.innerHTML = "Joyeux Anniversaire ! ❤️";
+            
+            // Lancer la pluie d'éléments romantiques
+            setInterval(createHeart, 200);
+        });
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            
+            const icons = ['❤️', '💖', '✨', '🌸', '🌹'];
+            heart.innerHTML = icons[Math.floor(Math.random() * icons.length)];
+            
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = (Math.random() * 2 + 3) + 's';
+            heart.style.fontSize = (Math.random() * 15 + 15) + 'px';
+            
+            document.body.appendChild(heart);
+
+            // Nettoyage pour ne pas surcharger le navigateur
+            setTimeout(() => {
+                heart.remove();
+            }, 5000);
+        }
+    </script>
+</body>
+</html>
