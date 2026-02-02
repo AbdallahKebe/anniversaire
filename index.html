@@ -33,13 +33,13 @@
             width: 85%;
             z-index: 10;
             border: 2px solid #ffe3e8;
-            position: relative;
         }
 
         h1 { 
             color: var(--primary-color); 
             font-size: 1.8rem;
             margin-bottom: 20px;
+            transition: all 0.5s ease;
         }
         
         #poem {
@@ -47,7 +47,7 @@
             line-height: 1.8;
             color: var(--text-color);
             font-size: 1.1rem;
-            animation: fadeIn 2.5s ease;
+            animation: fadeIn 2.5s ease forwards;
         }
 
         .highlight {
@@ -99,7 +99,7 @@
 </head>
 <body>
 
-    <audio id="bgMusic" loop>
+    <audio id="bgMusic" preload="auto" loop>
         <source src="https://www.chosic.com/wp-content/uploads/2021/04/My-Love-Piano-Melody.mp3" type="audio/mpeg">
     </audio>
 
@@ -123,48 +123,53 @@
     </div>
 
     <script>
-        <script>
-    const btn = document.getElementById('btn');
-    const poem = document.getElementById('poem');
-    const instruction = document.getElementById('instruction');
-    const title = document.getElementById('title');
-    const music = document.getElementById('bgMusic');
+        const btn = document.getElementById('btn');
+        const poem = document.getElementById('poem');
+        const instruction = document.getElementById('instruction');
+        const title = document.getElementById('title');
+        const music = document.getElementById('bgMusic');
 
-    btn.addEventListener('click', () => {
-        // Force la lecture de la musique
-        music.volume = 0.5; // Met le son à 50% pour ne pas la surprendre trop fort
-        
-        // On demande au navigateur de jouer le son
-        let playPromise = music.play();
+        btn.addEventListener('click', function() {
+            // 1. Démarrage de la musique avec gestion d'erreur
+            music.volume = 0.6;
+            const playPromise = music.play();
+            
+            if (playPromise !== undefined) {
+                playPromise.then(() => {
+                    console.log("Musique en cours de lecture");
+                }).catch(error => {
+                    console.log("Le navigateur a bloqué l'audio au départ :", error);
+                });
+            }
 
-        if (playPromise !== undefined) {
-            playPromise.then(_ => {
-                console.log("Musique lancée !");
-            }).catch(error => {
-                console.log("Erreur de lecture : ", error);
-            });
+            // 2. Changements visuels
+            title.innerHTML = "Joyeux Anniversaire ! ❤️";
+            instruction.style.display = 'none';
+            btn.style.display = 'none';
+            poem.style.display = 'block';
+
+            // 3. Lancement de la pluie de coeurs
+            setInterval(createHeart, 250);
+        });
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            
+            const icons = ['❤️', '💖', '✨', '🌸', '🌹'];
+            heart.innerHTML = icons[Math.floor(Math.random() * icons.length)];
+            
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = (Math.random() * 2 + 3) + 's';
+            heart.style.fontSize = (Math.random() * 15 + 15) + 'px';
+            
+            document.body.appendChild(heart);
+
+            // Supprimer le coeur après l'animation
+            setTimeout(() => {
+                heart.remove();
+            }, 5000);
         }
-        
-        // Effets visuels
-        poem.style.display = 'block';
-        btn.style.display = 'none';
-        instruction.style.display = 'none';
-        title.innerHTML = "Joyeux Anniversaire ! ❤️";
-        
-        setInterval(createHeart, 200);
-    });
-
-    function createHeart() {
-        const heart = document.createElement('div');
-        heart.classList.add('heart');
-        const icons = ['❤️', '💖', '✨', '🌸', '🌹'];
-        heart.innerHTML = icons[Math.floor(Math.random() * icons.length)];
-        heart.style.left = Math.random() * 100 + 'vw';
-        heart.style.animationDuration = (Math.random() * 2 + 3) + 's';
-        heart.style.fontSize = (Math.random() * 15 + 15) + 'px';
-        document.body.appendChild(heart);
-        setTimeout(() => { heart.remove(); }, 5000);
-    }        }
     </script>
 </body>
 </html>
